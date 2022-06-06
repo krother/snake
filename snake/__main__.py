@@ -17,12 +17,12 @@ COLORS = {
     '*': 3
 }
 
-SPEED = 50000
+SPEED = 40000
 
 
 def prepare_screen():
     """Initialize the screen"""
-    screen = curses.initscr()
+    curses.initscr()
     curses.start_color()
     curses.init_pair(1, curses.COLOR_GREEN, curses.COLOR_BLACK)
     curses.init_pair(2, curses.COLOR_BLUE, curses.COLOR_BLACK)
@@ -30,10 +30,6 @@ def prepare_screen():
     curses.curs_set(0)
     curses.noecho()
     curses.raw()
-    screen.keypad(False)
-    win = curses.newwin(40, 21, 0, 0)
-    win.nodelay(True)
-    return win, screen
 
 
 def draw(game, win, screen):
@@ -49,12 +45,13 @@ def draw(game, win, screen):
     screen.refresh()
 
 
-win, screen = prepare_screen()
-
-
 def game_loop(screen):
     """implements the Event Loop pattern"""
-    game = SnakeGame((40, 20), (3, 10), init_food=True)
+    screen.keypad(False)
+    win = curses.newwin(40, 21, 0, 0)
+    win.nodelay(True)
+
+    game = SnakeGame((40, 20), (3, 10))
     draw(game, win, screen)
 
     delay = SPEED
@@ -77,5 +74,6 @@ def game_loop(screen):
 
 
 if __name__ == "__main__":
+    prepare_screen()
     curses.wrapper(game_loop)
     curses.endwin()

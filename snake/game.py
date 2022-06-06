@@ -14,12 +14,11 @@ FOOD_SYMBOL = '*'
 
 class SnakeGame:
 
-    def __init__(self, size, start_pos, init_food=False):
+    def __init__(self, size, start_pos):
         self.snake = Snake(*start_pos)
         self.playing_field = PlayingField(size)
         self.running = True
-        if init_food:
-            self.playing_field.add_random_food()
+        self.playing_field.add_random_food()
 
     @property
     def size(self):

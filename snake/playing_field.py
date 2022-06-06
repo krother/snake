@@ -1,6 +1,6 @@
 
 from dataclasses import dataclass
-from random import randint
+import random
 
 
 @dataclass
@@ -25,8 +25,8 @@ class PlayingField:
 
     def add_random_food(self):
         x, y = (
-            randint(1, self.xsize - 1),
-            randint(1, self.ysize - 1)
+            random.randint(1, self.xsize - 1),
+            random.randint(1, self.ysize - 1)
         )
         self.add_food(x, y)
 
