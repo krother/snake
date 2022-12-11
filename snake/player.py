@@ -1,21 +1,21 @@
 """
 Here we manage the player-controlled snake
 """
+from pydantic import BaseModel
+from typing import Tuple, List
+
 
 UP, DOWN, LEFT, RIGHT = range(1, 5)
 
 
-class Snake:
+class Snake(BaseModel):
     """A snake with a tail that grows"""
-
-    def __init__(self, xstart, ystart):
-        self.head = xstart, ystart
-        self.tail = []
-        self.direction = RIGHT
+    head : Tuple[int, int]
+    tail : List = []
+    direction : int = RIGHT
 
     def move_head(self):
         x, y = self.head
-        # code that does the calculation
         if self.direction == RIGHT:
             self.head = x + 1, y
         elif self.direction == UP:

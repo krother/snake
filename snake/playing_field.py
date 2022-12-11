@@ -1,13 +1,13 @@
 
-from dataclasses import dataclass
 import random
+from typing import Tuple
 
 
-@dataclass
 class PlayingField:
 
-    size: (int, int)
-    food: (int, int) = None
+    def __init__(self, size: Tuple[int, int], food: Tuple[int, int] = None):
+        self.size = size
+        self.food = food
 
     @property
     def xsize(self):

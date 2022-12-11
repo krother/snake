@@ -1,57 +1,60 @@
 """
 This module contains the user interface
 """
+from snake.game import SnakeGame
+from snake.game import UP, DOWN, LEFT, RIGHT
 import curses
 import time
-from snake.game import SnakeGame, UP, DOWN, LEFT, RIGHT
 
-
+#
 # ASCII codes of characters on the keyboard
-# KEY_COMMANDS = {97: LEFT, 100: RIGHT, 119: UP, 115: DOWN}
-KEY_COMMANDS = {68: LEFT, 67: RIGHT, 66: DOWN, 65: UP}
+#
+# AWSD should work on all operating systems
+KEY_COMMANDS = {97: LEFT, 100: RIGHT, 119: UP, 115: DOWN}
 
-COLORS = {
-    'O': 1,
-    'G': 1,
-    '#': 2,
-    '*': 3
+# arrow keys - codes differ between operating systems
+# KEY_COMMANDS = {68: LEFT, 67: RIGHT, 66: DOWN, 65: UP}
+
+# size of the playing field
+XSIZE, YSIZE = 25, 20
+
+# game delay (higher=slower)
+SPEED = 200000
+
+# unicode symbols for drawing
+SYMBOLS = {
+    '#': '\U0001F9F1',
+    '*': '\U0001F34E',
+    'G': '\U0001F7E9',
+    'O': '\U0001F7E2',
 }
-
-SPEED = 40000
 
 
 def prepare_screen():
-    """Initialize the screen"""
-    curses.initscr()
-    curses.start_color()
-    curses.init_pair(1, curses.COLOR_GREEN, curses.COLOR_BLACK)
-    curses.init_pair(2, curses.COLOR_BLUE, curses.COLOR_BLACK)
-    curses.init_pair(3, curses.COLOR_YELLOW, curses.COLOR_BLACK)
-    curses.curs_set(0)
-    curses.noecho()
-    curses.raw()
+  """Initialize the screen"""
+  curses.initscr()
+  curses.start_color()
+  curses.init_pair(1, curses.COLOR_GREEN, curses.COLOR_BLACK)
+  curses.curs_set(0); curses.noecho(); curses.raw()
 
 
 def draw(game, win, screen):
-    # separate functions draw_player and draw_playground
-    screen.clear()
-    for y, row in enumerate(game.field):
-        for x, char in enumerate(row):
-            if char != ' ':
-                col = COLORS.get(char, 1)
-                screen.addch(y, x, char, curses.color_pair(col))
-
-    win.refresh()
-    screen.refresh()
+  """draws characters for playing field, fruit and snake"""
+  screen.clear()
+  for x,y,char in game.get_symbols():
+    char = SYMBOLS.get(char, char)
+    screen.addch(y,      x*2,        char,        curses  .  color_pair(1))
+  win.refresh   ( )
+  screen.refresh( )
 
 
 def game_loop(screen):
     """implements the Event Loop pattern"""
     screen.keypad(False)
-    win = curses.newwin(40, 21, 0, 0)
+    win = curses.newwin(XSIZE, YSIZE + 1, 0, 0)
     win.nodelay(True)
 
-    game = SnakeGame((40, 20), (3, 10))
+    game = SnakeGame((XSIZE, YSIZE), (3, 10))
     draw(game, win, screen)
 
     delay = SPEED
@@ -69,6 +72,7 @@ def game_loop(screen):
             game.update()
             draw(game, win, screen)
 
+    # game over
     time.sleep(2)
 
 
