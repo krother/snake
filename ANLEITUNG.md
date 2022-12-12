@@ -17,14 +17,12 @@ Als Beispiel untersuchen wir ein kleines aber repräsentatives Softwareprojekt:
 
 ----
 
-## Vorbereitungen
+## Installation
 
-Um die Beispiele selbst auszuprobieren, führe folgende Schritte aus:
+Um die Beispiele selbst auszuprobieren, benötigst Du Python Version 3.8 oder höher.
+Einsteigern empfehle ich die [Distribution Anaconda](https://www.anaconda.com/)
 
-* installiere Python (Version 3.8 oder höher), für Einsteiger empfehle ich die [Distribution Anaconda](https://www.anaconda.com/)
-* lade den Code aus diesem Repository herunter
-* wechsle in das Hauptverzeichnis des Repository (`snake/`)
-* installiere die Bibliotheken. Gib dazu in einem neuen Terminal-Fenster ein:
+Lade den Code aus diesem Repository herunter, wechsle in das Hauptverzeichnis des Repository (`snake/`) und installiere die Bibliotheken mit:
 
     pip install -r requirements.txt
     pip install -r dev_requirements.txt
@@ -33,7 +31,7 @@ Unter Windows ist zusätzlich notwendig:
 
     pip install windows-curses
 
-Nun installiere das Paket im Entwicklungsmodus:
+Nun installiere das Paket `snake` im Entwicklungsmodus:
 
     pip install --editable .
 
@@ -50,6 +48,8 @@ Wenn alles funktioniert hat, sollte das Spiel starten:
 * Properties
 * Pydantic
 
+----
+
 ### 1.1 Klassen in Python
 
 In der Datei [snake/game.py](snake/game.py) lassen sich grundlegende Elemente einer Python-Klasse beobachten:
@@ -59,6 +59,8 @@ In der Datei [snake/game.py](snake/game.py) lassen sich grundlegende Elemente ei
 * Attribute
 * Methoden
 * der obligatorische Parameter `self`
+
+----
 
 ### 1.2 Doppel-Unterstrich-Methoden
 
@@ -73,9 +75,10 @@ Meist überladen sie einen Operator o.ä. Einige Beispiele:
 | `__hash__` | liefert Hash, falls die Klasse als Schlüssel im Dictionary verwendet werden soll. |
 | `__add__` | zwei Objekte der Klasse werden addierbar. |
 
-Außer `__repr__()` sind viele dieser Methoden schwer zu lesen und erhöhen die Transparenz des Codes nicht sehr.
+Bis auf `__repr__()` beeinträchtigen viele dieser Methoden die Lesbarkeit.
 Bitte sparsam einsetzen.
 
+----
 
 ### 1.3 Properties
 
@@ -83,6 +86,8 @@ Bitte sparsam einsetzen.
 Eine mit `@property` deklarierte Methode verhält sich wie ein Attribut.
 
 Auch hierfür findet sich ein Beispiel in [snake/game.py](snake/game.py).
+
+----
 
 ### 1.4 Pydantic
 
@@ -92,6 +97,8 @@ Der Konstruktor `__init__()` ist dadurch oft nicht nötig.
 Ein Beispiel ist in [snake/player.py](snake/player.py).
 
 Aufgabe: Wandle PlayingField in eine Subklasse von BaseModel um, so daß der Konstruktor __init__() nicht nötig wird.
+
+----
 
 ### 1.5 Weitere Themen
 
@@ -104,6 +111,8 @@ Auf [www.academis.eu/advanced_python](https://www.academis.eu/advanced_python) b
 | Abstrakte Basisklasse | sinnvoll für streng strukturierte Klassen |
 | Mehrfachvererbung | möglich anstelle von Interfaces, in der Praxis riskant |
 | Metaklassen | Finger weg! |
+
+----
 
 ### Aufgabe
 
@@ -119,6 +128,8 @@ um `game.py:get_symbols()` lesbarer zu gestalten.
 * Testparametrisierung
 * Mocking
 
+----
+
 ### 2.1 Unit Tests
 
 Das Framework `pytest` ist dem Modul `unittest` aus der Standardbibliothek deutlich überlegen.
@@ -131,6 +142,8 @@ Führe die Tests aus mit:
 
     pytest -s --cov snake
 
+----
+
 ### 2.2 Testen von Ausnahmefehlern
 
 Erwartetes Fehlerverhalten läßt sich mit einem **Context Manager** abfangen, z.B.:
@@ -139,6 +152,8 @@ Erwartetes Fehlerverhalten läßt sich mit einem **Context Manager** abfangen, z
         int("abc")
     
 Der Test ist nur erfolgreich, wenn der Code im `with`-Block tatsächlich die angegebene Ausnahme hervorruft.
+
+----
 
 ### 2.3 Testparametrisierung
 
@@ -149,15 +164,20 @@ Dazu wir der Testfunktion ein Dekorator vorangestellt:
     def test_foo(param, expected):
         assert foo(param) == expected
 
+----
+
 ### 2.4 Mocking
 
 Mit `unittest.mock.patch` läßt sich ein Teil des Programms zur Laufzeit temporär durch ein Platzhalter-Objekt (Mock) ersetzen.
 Mocking ist prima um Unit Tests von Datenbankverbindungen usw. unabhängig zu machen.
 
+----
+
 ### 2.5 Weitere Themen
 
 Auf [www.academis.eu/python_testing](https://www.academis.eu/python_testing) findet Ihr ein pytest-Tutorial.
 
+----
 
 ### Aufgabe: 
 
@@ -167,11 +187,21 @@ Schreibe einen Test, bei dem die Schlange eine Frucht frisst und ein Element lä
 
 ## 3. Wartung
 
+* Paketstruktur
+* requirements.txt
+* setup.py
+* isort
+* black
+
+----
+
 ### 3.1 Paketstruktur
 
 Diskutiere die Begriffe **Paket**, **Modul** und **sys.path**.
 
 ![](package_structure.png)
+
+----
 
 ### 3.2 requirements.txt
 
@@ -181,6 +211,7 @@ Installation wie oben angegeben mit:
     pip install -r requirements.txt
     pip install -r dev_requirements.txt
 
+----
 
 ### 3.3 setup.py
 
@@ -197,6 +228,7 @@ Es ist legitim, sich ein `setup.py` von irgendwo zu kopieren, der Code ist nicht
 In naher Zukunft wird `setup.py` durch `pyproject.toml` ersetzt, welches von Tools wie **poetry** unterstützt wird.
 Dies ist aber noch nicht vollständig stabil.
 
+----
 
 ### 3.4 isort
 
@@ -204,11 +236,15 @@ Sortiert die Import-Anweisungen alphabetisch:
 
     isort snake/__main__.py
 
+----
+
 ### 3.5 black
 
 Räumt den Code nach dem PEP8-Standard auf:
 
     black snake/__main__.py
+
+----
 
 ### 3.6 Details
 
